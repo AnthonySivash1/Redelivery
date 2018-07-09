@@ -10,5 +10,9 @@
 
 	<camelContext xmlns="http://camel.apache.org/schema/spring">
 		<routeBuilder ref="routeBuilder" />
+		
+		<redeliveryPolicyProfile id="testRedeliveryPolicyProfile"
+			retryAttemptedLogLevel="WARN" maximumRedeliveries="5"
+			redeliveryDelay="5" />
 	</camelContext>
 </beans>

@@ -6,6 +6,7 @@ import org.apache.camel.builder.RouteBuilder;
 
 import com.anthony.exception.CamelCustomException;
 import com.anthony.processor.MyProcessor;
+import com.anthony.processor.RedeliveryProcessor;
 
 
 public class SimpleRouteBuilder extends RouteBuilder {
@@ -16,11 +17,12 @@ public class SimpleRouteBuilder extends RouteBuilder {
 	            public void process(Exchange exchange) throws Exception {
 	                System.out.println("handling ex");
 	            }
-	        }).log("Received body ").handled(true);
+	            //redilievery attempts to redileiever a file if an exception was thrown
+	        }).onRedelivery(new RedeliveryProcessor()).redeliveryPolicyRef("testRedeliveryPolicyProfile").log("Received body ").handled(true);
 	        from("file:C:/inputFolder?noop=true").process(new MyProcessor()).to("file:C:/outputFolder");
 	            
 
-	        from("file:C:/inbox?noop=true").process(new MyProcessor()).to("file:C:/outbox");
+	       
 	    }
 	 
 }
